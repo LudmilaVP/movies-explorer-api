@@ -1,83 +1,50 @@
-const Cards = require('../models/movie');
+const Movie = require('../models/movie');
 const BadRequest = require('../errors/BadRequest');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 
-const getCards = (req, res, next) => {
-  Cards.find({}).populate('owners', 'likes')
-    .then((cards) => res.send(cards))
+const getMovies = (req, res, next) => {
+  const owner = req.user._id;
+
+  return Movie.find({ owner })
+    .then((movies) => res.send(movies))
     .catch(next);
 };
 
-const createCard = (req, res, next) => {
-  const { name, link } = req.body;
+const createMovie = (req, res, next) => {
   const owner = req.user._id;
 
-  return Cards.create({ name, link, owner })
-    .then((card) => res.send(card))
+  return Movie.create({ owner, ...req.body })
+    .then((movies) => res.send(movies))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные карточки'));
+        next(new BadRequest('Переданы некорректные данные'));
       } else {
         next(err);
       }
     });
 };
 
-const likeCard = (req, res, next) => {
-  Cards.findByIdAndUpdate(
-    req.params.cardId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true },
-  ).orFail(() => {
-    throw new NotFoundError('Не найдена карточка с указанным id');
-  })
-    .then((card) => res.send(card))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные карточки'));
-      }
-      next(err);
-    });
-};
+const deleteMovie = (req, res, next) => {
+  const owner = req.user._id;
+  const { movieId } = req.params;
 
-const deleteCard = (req, res, next) => {
-  const { cardId } = req.params;
-  return Cards.findById(cardId)
+  return Movie.findById(movieId)
     .orFail(() => {
-      throw new NotFoundError('Не найдена карточка с указанным id');
+      throw new NotFoundError('Не найден фильм с указанным id');
     })
-    .then((card) => {
-      if (card.owner.toString() === req.user._id) {
-        Cards.findByIdAndRemove(cardId).then(() => res.send(card));
+    .then((movie) => {
+      if (movie.owner.toString() !== owner) {
+        Movie.findByIdAndRemove(movieId).then(() => res.send(movieId));
       } else {
-        throw new ForbiddenError('Нельзя удалять чужую карточку');
+        throw new ForbiddenError('Нельзя удалить чужой фильм');
       }
     })
     .catch(next);
 };
 
-const dislikeCard = (req, res, next) => {
-  Cards.findByIdAndUpdate(
-    req.params.cardId,
-    { $pull: { likes: req.user._id } },
-    { new: true },
-  ).orFail(() => {
-    throw new NotFoundError('Не найдена карточка с указанным id');
-  })
-    .then((card) => res.send(card))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные карточки'));
-      }
-      next(err);
-    });
-};
-
 module.exports = {
-  getCards,
-  createCard,
-  likeCard,
-  deleteCard,
-  dislikeCard,
+  getMovies,
+  createMovie,
+  deleteMovie,
 };
