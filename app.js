@@ -40,14 +40,7 @@ app.use(errorLogger);
 app.use(errors());
 app.use(handleError);
 
-mongoose.connect(DATABASE_URL)
-  .then(() => {
-    console.log(`Connected to database on ${DATABASE_URL}`);
-  })
-  .catch((err) => {
-    console.log('Error on database connection');
-    console.error(err);
-  });
+mongoose.connect(DATABASE_URL);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
