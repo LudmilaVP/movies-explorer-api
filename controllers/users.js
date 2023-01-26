@@ -52,19 +52,18 @@ const getUser = (req, res, next) => {
 
 const updateUser = (req, res, next) => {
   const id = req.user._id;
-  const newName = req.body.name;
-  const newEmail = req.body.email;
+  const { name, about } = req.body;
   return User.findByIdAndUpdate(
     { _id: id },
-    { name: newName, email: newEmail },
-    { runValidators: true, new: true },
+    { name, about },
+    { new: true, runValidators: true },
   ).orFail(() => {
-    throw new NotFoundError('Не найден пользователь с указанным id');
+    throw new NotFoundError('Карточка или пользователь не найден');
   })
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные пользователя'));
+        next(new BadRequest('Переданы некорректные данные'));
       } else {
         next(err);
       }
@@ -73,14 +72,12 @@ const updateUser = (req, res, next) => {
 
 const createUser = (req, res, next) => {
   const {
-    name, about, avatar, email, password,
+    name, email, password,
   } = req.body;
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name,
-      about,
-      avatar,
       email,
       password: hash,
     }))
