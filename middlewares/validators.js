@@ -30,8 +30,9 @@ const createMovieValidator = celebrate({
     year: Joi.string().required().min(2).max(4),
     description: Joi.string().required().min(1).max(5000),
     image: Joi.string().required().pattern(linkPattern),
-    trailer: Joi.string().required().pattern(linkPattern),
+    trailerLink: Joi.string().required().pattern(linkPattern),
     thumbnail: Joi.string().required().pattern(linkPattern),
+    owner: Joi.string().required().min(1).max(100),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required().min(1).max(100),
     nameEN: Joi.string().required().min(1).max(100),
@@ -45,17 +46,10 @@ const deleteMovieValidator = celebrate({
   }),
 });
 
-const idValidator = celebrate({
-  params: Joi.object().keys({
-    _id: Joi.string().required().hex().length(24),
-  }),
-});
-
 module.exports = {
   signinValidator,
   signupValidator,
   updateUserValidator,
   createMovieValidator,
   deleteMovieValidator,
-  idValidator,
 };

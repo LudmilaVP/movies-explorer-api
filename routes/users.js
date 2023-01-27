@@ -5,11 +5,10 @@ const {
 } = require('../controllers/users');
 
 const {
-  idValidator,
   updateUserValidator,
 } = require('../middlewares/validators');
 
-router.get('/users/me', idValidator, getUser);
+router.get('/users/me', getUser);
 router.patch('/users/me', updateUserValidator, updateUser);
 
 module.exports = router;
