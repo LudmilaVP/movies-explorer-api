@@ -8,7 +8,7 @@ const {
 const {
   createMovieValidator,
   deleteMovieValidator,
-} = require('../middlewares/validators');
+} = require('../validators/validators');
 
 router.get('/movies', getMovies);
 router.post('/movies', createMovieValidator, createMovie);

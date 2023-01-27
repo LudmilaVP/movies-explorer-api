@@ -6,7 +6,7 @@ const {
 
 const {
   updateUserValidator,
-} = require('../middlewares/validators');
+} = require('../validators/validators');
 
 router.get('/users/me', getUser);
 router.patch('/users/me', updateUserValidator, updateUser);

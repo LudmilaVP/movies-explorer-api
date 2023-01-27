@@ -16,7 +16,7 @@ const {
 } = process.env;
 const auth = require('./middlewares/auth');
 const handleError = require('./middlewares/handleError');
-const { signupValidator, signinValidator } = require('./middlewares/validators');
+const { signupValidator, signinValidator } = require('./validators/validators');
 const { createUser, login, signout } = require('./controllers/users');
 const corsOption = require('./middlewares/cors');
 
