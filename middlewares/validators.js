@@ -27,7 +27,7 @@ const createMovieValidator = celebrate({
     country: Joi.string().required().min(1).max(100),
     director: Joi.string().required().min(1).max(100),
     duration: Joi.number().required(),
-    year: Joi.number().required().min(2).max(4),
+    year: Joi.string().required(),
     description: Joi.string().required().min(1).max(5000),
     image: Joi.string().required().pattern(linkPattern),
     trailerLink: Joi.string().required().pattern(linkPattern),
