@@ -40,14 +40,14 @@ const createMovieValidator = celebrate({
 
 const deleteMovieValidator = celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().required().alphanum().length(24)
+    movieId: Joi.string().required().alphanum().length(24)
       .hex(),
   }),
 });
 
 const idValidator = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().required().hex().length(24),
+    _id: Joi.string().required().hex().length(24),
   }),
 });
 

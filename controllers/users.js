@@ -54,7 +54,7 @@ const updateUser = (req, res, next) => {
   const id = req.user._id;
   const { name, about } = req.body;
   return User.findByIdAndUpdate(
-    id,
+    { _id: id },
     { name, about },
     { new: true, runValidators: true },
   ).orFail(() => {
