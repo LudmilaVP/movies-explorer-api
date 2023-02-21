@@ -52,10 +52,10 @@ const getUser = (req, res, next) => {
 
 const updateUser = (req, res, next) => {
   const id = req.user._id;
-  const { name, about } = req.body;
+  const { name, email } = req.body;
   return User.findByIdAndUpdate(
     { _id: id },
-    { name, about },
+    { name, email },
     { new: true, runValidators: true },
   ).orFail(() => {
     throw new NotFoundError('Карточка или пользователь не найден');
