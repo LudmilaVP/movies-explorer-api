@@ -22,8 +22,7 @@ const login = (req, res, next) => {
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
-          sameSite: false,
-          secure: true,
+          sameSite: true,
         })
         .send({ message: 'Успешная авторизация' });
     })
@@ -37,7 +36,7 @@ const signout = (req, res) => {
 const getUser = (req, res, next) => {
   const id = req.user._id;
 
-  return User.findById(id)
+  User.findById(id)
     .orFail(() => {
       throw new NotFoundError('Не найден пользователь с указанным id');
     })
@@ -51,15 +50,14 @@ const getUser = (req, res, next) => {
 };
 
 const updateUser = (req, res, next) => {
-  const id = req.user._id;
   const { name, email } = req.body;
-  return User.findByIdAndUpdate(
-    { _id: id },
-    { name, email },
-    { new: true, runValidators: true },
-  ).orFail(() => {
-    throw new NotFoundError('Карточка или пользователь не найден');
+  User.findByIdAndUpdate(req.user._id, { name, email }, {
+    new: true,
+    runValidators: true,
   })
+    .orFail(() => {
+      throw new NotFoundError('Карточка или пользователь не найден');
+    })
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
@@ -84,7 +82,6 @@ const createUser = (req, res, next) => {
     .then((user) => {
       res.status(200).send({
         name: user.name,
-        _id: user._id,
         email: user.email,
       });
     })
