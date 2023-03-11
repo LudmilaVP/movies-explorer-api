@@ -4,13 +4,14 @@ const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 
 const getMovies = (req, res, next) => {
-  Movie.find({})
+  const owner = req.user._id;
+
+  return Movie.find({ owner })
     .then((movies) => res.send(movies))
     .catch(next);
 };
 
 const createMovie = (req, res, next) => {
-  const owner = req.user._id;
   const {
     country,
     director,
@@ -37,7 +38,7 @@ const createMovie = (req, res, next) => {
     nameEN,
     thumbnail,
     movieId,
-    owner,
+    owner: req.user._id,
   })
     .then((movies) => res.send(movies))
     .catch((err) => {
@@ -50,18 +51,19 @@ const createMovie = (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  const { movieId } = req.params._id;
+  const owner = req.user._id;
+  const { movieId } = req.params;
 
-  Movie.findById(movieId)
+  return Movie.findById(movieId)
     .orFail(() => {
       throw new NotFoundError('Не найден фильм с указанным id');
     })
     .then((movie) => {
-      if (!movie.owner.equals(req.user._id)) {
-        return next(new ForbiddenError('Нельзя удалить фильм другого пользователя'));
+      if (movie.owner.toString() !== owner) {
+        Movie.findByIdAndRemove(movieId).then(() => res.send(movieId));
+      } else {
+        throw new ForbiddenError('Нельзя удалить чужой фильм');
       }
-      return movie.remove()
-        .then(() => res.send({ message: 'Фильм удален' }));
     })
     .catch(next);
 };
