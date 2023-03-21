@@ -4,7 +4,6 @@ const isURL = require('validator/lib/isURL');
 const movieSchema = new mongoose.Schema({
   country: {
     type: String,
-    required: true,
   },
   director: {
     type: String,
