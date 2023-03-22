@@ -1,5 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
-const { linkPattern } = require('../utils/constants');
+const { isURL } = require('validator');
+const BadRequest = require('../errors/BadRequest');
 
 const signinValidator = celebrate({
   body: Joi.object().keys({
@@ -22,20 +23,26 @@ const updateUserValidator = celebrate({
   }),
 });
 
+const checkUrl = Joi.string().required().custom((url) => {
+  if (!isURL(url, { protocols: ['http', 'https'], require_protocol: true })) {
+    throw new BadRequest('Некорректная ссылка');
+  }
+  return url;
+});
+
 const createMovieValidator = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required().min(1).max(100),
-    director: Joi.string().required().min(1).max(100),
+    country: Joi.string().required(),
+    director: Joi.string().required(),
     duration: Joi.number().required(),
     year: Joi.string().required(),
-    description: Joi.string().required().min(1).max(5000),
-    image: Joi.string().required().pattern(linkPattern),
-    trailerLink: Joi.string().required().pattern(linkPattern),
-    thumbnail: Joi.string().required().pattern(linkPattern),
-    owner: Joi.string().required().min(1).max(100),
+    description: Joi.string().required(),
+    image: checkUrl,
+    trailerLink: checkUrl,
+    thumbnail: checkUrl,
     movieId: Joi.number().required(),
-    nameRU: Joi.string().required().min(1).max(100),
-    nameEN: Joi.string().required().min(1).max(100),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 });
 
