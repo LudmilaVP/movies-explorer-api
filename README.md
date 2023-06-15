@@ -27,10 +27,7 @@
 
 ### Деплой
 
-- Использован сервер на Yandex Cloud
+- Использован сервер на Yandex Cloud: https://api.moviexplorer.nomoredomains.rocks  (IP: 51.250.13.249)
 - Запущена виртуальная машина на Ubuntu
 - Зарегистрирован домен для API
 - Выпущен и подключён https сертификат
-
-- IP: 51.250.13.249
-- Backend: https://api.moviexplorer.nomoredomains.rocks
