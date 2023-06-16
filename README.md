@@ -31,7 +31,7 @@
 
 ### Данные сайта и сервера
 
-- Использован сервер на Yandex Cloud: https://api.moviexplorer.nomoredomains.rocks  (IP: 51.250.13.249)
+- Использован сервер на Yandex Cloud: https://api.moviexplorer.nomoredomains.rocks
 - Запущена виртуальная машина на Ubuntu
 - Зарегистрирован домен для API
 - Выпущен и подключён https сертификат
