@@ -1,37 +1,37 @@
-# Название проекта: Movies Explorer
+# Movies Explorer
 
-## Запуск проекта
+## Project launch:
 
-- `npm run start` — запускает сервер
-- `npm run dev` — запускает сервер с hot-reload
-- `npm run lint` — запуск EsLint
+- `npm run start` — starts the server
+- `npm run dev` — starts the server with hot-reload
+- `npm run lint` — start EsLint
 
-## Описание
+## Description
 
-Бэкенд Movies Explorer - сервис, в котором можно найти фильмы по запросу и сохранить в личном кабинете.
+Backend Movies Explorer - service where you can find movies on demand and save them in your personal account.
 
-### Реализовано:
+### Implemented:
 
-- подключение проекта к серверу;
-- присвоение доменного имени;
-- подключение сертификатов https;
-- размещение API на отдельном поддомене;
-- защита API авторизацией;
-- бережное хранение пароля пользователя;
-- централизованная обработка ошибок;
-- валидация приходящих на сервер запросов;
-- валидация данных на уровне схемы;
-- логирование;
+- connecting the project to the server;
+- assignment of a domain name;
+- connection of https certificates;
+- placement of the API on a separate subdomain;
+- API authorization protection;
+- careful storage of the user's password;
+- centralized error handling;
+- validation of incoming requests to the server;
+- validation of data at the schema level;
+- logging;
 - rate limiter.
 
-### Стек:
+### Stack:
 - JavaScript;
-- Яндекс.Облако.
+- Yandex.Cloud.
 
 
-### Данные сайта и сервера
+### Site and server data
 
-- Использован сервер на Yandex Cloud: https://api.moviexplorer.nomoredomains.rocks
-- Запущена виртуальная машина на Ubuntu
-- Зарегистрирован домен для API
-- Выпущен и подключён https сертификат
+- A server on Yandex Cloud is used: https://api.moviexplorer.nomoredomains.rocks
+- Running a virtual machine on Ubuntu
+- Registered domain for API
+- Issued and connected https certificate
